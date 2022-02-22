@@ -1,5 +1,4 @@
 const inquirer = require("inquirer");
-const Choice = require("inquirer/lib/objects/choice");
 
 function mainMenu() {
     inquirer.prompt([
