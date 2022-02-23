@@ -1,6 +1,5 @@
 const inquirer = require("inquirer");
 const mysql = require('mysql2');
-const { listenerCount } = require("mysql2/typings/mysql/lib/Connection");
 
 const db = mysql.createConnection(
     {
@@ -112,24 +111,24 @@ function addEmployee() {
     inquirer.prompt([
         {
             message: "What is your new Employees first name?",
-            name: "first_name",
+            name: "firstName",
             type: 'input'
         },
         {
             mesage: "What is your new Employees last name?",
-            name: "last_name",
+            name: "lastName",
             type: 'input'
         },
         {
-            message: "What is your new employees role?",
+            message: "What is your new employees role? Select the appropriate number",
             name: "newRole",
             type: 'list',
-            choices: ['Project Manager', 'Program Manager', 'Junior Engineer', 'Senior Engineer', 'Account Executive', 'Senior Account Executive', 'Director of Technology', 'CEO']
+            choices: ['1', '(2) Program Manager', '(3) Junior Engineer', '(4) Senior Engineer', '(5) Account Executive', '(6) Senior Account Executive', '(7) Director of Technology', '(8) CEO']
         },
         
     ]).then(({newEmployee}) => {
         const queryStr = `
-        INSERT INTO employee (name)
+        INSERT INTO employee
         VALUES (?)`
 
         db.query(queryStr, [newEmployee], (err, result) => {
@@ -161,15 +160,37 @@ function addRole() {
     inquirer.prompt([
         {
             message: "What is your new role?",
-            name: "newDept",
+            name: "newRole",
             type: 'input'
         }
     ]).then(({newRole}) => {
         const queryStr = `
-        INSERT INTO department (name)
+        INSERT INTO role (name)
         VALUES (?)`
 
         db.query(queryStr, [newRole], (err, result) => {
+            if(err)throw err;
+            console.log(result)
+
+            mainMenu()
+        })
+    })
+}
+
+function updateEmployeeRole() {
+
+    inquirer.prompt([
+       {
+            message: ""
+       },
+        
+    ]).then(({updatedEmployee}) => {
+        const queryStr = `
+        UPDATE employee
+        SET (?)
+        WHERE (?)`
+
+        db.query(queryStr, [updateEmployee], (err, result) => {
             if(err)throw err;
             console.log(result)
 
