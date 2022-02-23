@@ -90,12 +90,20 @@ function addDept() {
     })
 }
 
-// function allEmployees = () => {
-//     inquirer.prompt([
-//         {
+function viewAllEmployees() {
+    const queryStr = `
+    SELECT *
+    FROM employee`
 
-//         }
-//     ])
-// }
- 
+    db.query(queryStr, (err, result) => {
+        if(err) throw err;
 
+        console.log(`\n`)
+        console.table(result)
+        console.log(`\n`)
+
+        mainMenu()
+    })
+}
+
+fucntion 
