@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require('mysql2');
+const { listenerCount } = require("mysql2/typings/mysql/lib/Connection");
 
 const db = mysql.createConnection(
     {
@@ -106,4 +107,73 @@ function viewAllEmployees() {
     })
 }
 
-fucntion 
+function addEmployee() {
+
+    inquirer.prompt([
+        {
+            message: "What is your new Employees first name?",
+            name: "first_name",
+            type: 'input'
+        },
+        {
+            mesage: "What is your new Employees last name?",
+            name: "last_name",
+            type: 'input'
+        },
+        {
+            message: "What is your new employees role?",
+            name: "newRole",
+            type: 'list',
+            choices: ['Project Manager', 'Program Manager', 'Junior Engineer', 'Senior Engineer', 'Account Executive', 'Senior Account Executive', 'Director of Technology', 'CEO']
+        },
+        
+    ]).then(({newEmployee}) => {
+        const queryStr = `
+        INSERT INTO employee (name)
+        VALUES (?)`
+
+        db.query(queryStr, [newEmployee], (err, result) => {
+            if(err)throw err;
+            console.log(result)
+
+            mainMenu()
+        })
+    })
+}
+
+function viewAllRoles() {
+    const queryStr = `
+    SELECT *
+    FROM role`
+
+    db.query(queryStr, (err, result) => {
+        if(err) throw err;
+
+        console.log(`\n`)
+        console.table(result)
+        console.log(`\n`)
+
+        mainMenu()
+    })
+}
+
+function addRole() {
+    inquirer.prompt([
+        {
+            message: "What is your new role?",
+            name: "newDept",
+            type: 'input'
+        }
+    ]).then(({newRole}) => {
+        const queryStr = `
+        INSERT INTO department (name)
+        VALUES (?)`
+
+        db.query(queryStr, [newRole], (err, result) => {
+            if(err)throw err;
+            console.log(result)
+
+            mainMenu()
+        })
+    })
+}
